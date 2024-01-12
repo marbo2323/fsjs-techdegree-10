@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const CreateCourse = () => {
   const courseTitle = useRef();
@@ -8,30 +8,34 @@ const CreateCourse = () => {
   const materialsNeeded = useRef();
   const navigate = useNavigate();
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log("Handle Create Course");
+  };
+
   const handleCancel = (event) => {
     event.preventDefault();
     navigate("/");
   };
 
   return (
-    <>
+    <div className="wrap">
       <h2>Create Course</h2>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="main--flex">
           <div>
-            <label for="courseTitle">Course Title</label>
+            <label htmlFor="courseTitle">Course Title</label>
             <input
               id="courseTitle"
               name="courseTitle"
               type="text"
-              value=""
               ref={courseTitle}
             />
 
-            <p>By Joe Smith</p>
+            <p>By Signed in user</p>
 
-            <label for="courseDescription">Course Description</label>
+            <label htmlFor="courseDescription">Course Description</label>
             <textarea
               id="courseDescription"
               name="courseDescription"
@@ -39,16 +43,15 @@ const CreateCourse = () => {
             ></textarea>
           </div>
           <div>
-            <label for="estimatedTime">Estimated Time</label>
+            <label htmlFor="estimatedTime">Estimated Time</label>
             <input
               id="estimatedTime"
               name="estimatedTime"
               type="text"
-              value=""
               ref={estimatedTime}
             />
 
-            <label for="materialsNeeded">Materials Needed</label>
+            <label htmlFor="materialsNeeded">Materials Needed</label>
             <textarea
               id="materialsNeeded"
               name="materialsNeeded"
@@ -63,7 +66,7 @@ const CreateCourse = () => {
           Cancel
         </button>
       </form>
-    </>
+    </div>
   );
 };
 

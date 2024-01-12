@@ -7,7 +7,7 @@ const Header = () => {
           <Link to="/">Courses</Link>
         </h1>
         <nav>
-          <ul class="header--signedout">
+          <ul className="header--signedout">
             <li>
               <Link to="/signup">Sign Up</Link>
             </li>
