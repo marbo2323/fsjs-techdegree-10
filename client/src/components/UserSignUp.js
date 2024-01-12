@@ -6,6 +6,7 @@ const UserSignUp = () => {
   const lastName = useRef();
   const emailAddress = useRef();
   const password = useRef();
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -21,37 +22,18 @@ const UserSignUp = () => {
       <h2>Sign Up</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="firstName">First Name</label>
-        <input
-          id="firstName"
-          name="firstName"
-          type="text"
-          value=""
-          ref={firstName}
-        />
+        <input id="firstName" name="firstName" type="text" ref={firstName} />
         <label htmlFor="lastName">Last Name</label>
-        <input
-          id="lastName"
-          name="lastName"
-          type="text"
-          value=""
-          ref={lastName}
-        />
+        <input id="lastName" name="lastName" type="text" ref={lastName} />
         <label htmlFor="emailAddress">Email Address</label>
         <input
           id="emailAddress"
           name="emailAddress"
           type="email"
-          value=""
           ref={emailAddress}
         />
         <label htmlFor="password">Password</label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          value=""
-          ref={password}
-        />
+        <input id="password" name="password" type="password" ref={password} />
         <button className="button" type="submit">
           Sign Up
         </button>

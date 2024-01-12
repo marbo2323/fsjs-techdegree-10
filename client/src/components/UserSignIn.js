@@ -1,17 +1,32 @@
-import { useRef } from "react";
+import { useRef, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import UserContext from "../context/UserContext";
 
 const UserSignIn = () => {
   const emailAddress = useRef();
   const password = useRef();
   const navigate = useNavigate();
+  const { actions } = useContext(UserContext);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const credentials = {
       emailAddress: emailAddress.current.value,
       password: password.current.value,
     };
+
+    let errors = [];
+    try {
+      const user = await actions.signInUser(credentials);
+      if (user) {
+        navigate("/");
+      } else {
+        errors = ["Sign-in Feiled!"];
+      }
+    } catch (error) {
+      console.log(error);
+      errors = ["Sign-in Feiled!"];
+    }
   };
 
   const handleCancel = (event) => {

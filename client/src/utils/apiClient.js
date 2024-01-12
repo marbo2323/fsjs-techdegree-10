@@ -1,0 +1,32 @@
+const apiBaseUrl = "http://localhost:5000/api";
+
+export const call = (
+  apiPath,
+  method = "GET",
+  body = null,
+  credentials = null
+) => {
+  const url = apiBaseUrl + apiPath;
+
+  const options = {
+    method,
+    headers: {},
+  };
+
+  if (body) {
+    options.body = JSON.stringify(body);
+    options.headers["Content-Type"] = "application/json; charset=utf-8";
+  }
+
+  if (credentials) {
+    const base64Credentials = btoa(
+      `${credentials.emailAddress}:${credentials.password}`
+    );
+    options.headers.Authorization = `Basic ${base64Credentials}`;
+  }
+  return fetch(url, options);
+};
+
+export const signIn = (apiPath, credentials) => {
+  return call(apiPath, "GET", null, credentials);
+};
