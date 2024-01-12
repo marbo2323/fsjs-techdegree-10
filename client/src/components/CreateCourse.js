@@ -6,6 +6,7 @@ const CreateCourse = () => {
   const courseDescription = useRef();
   const estimatedTime = useRef();
   const materialsNeeded = useRef();
+  const navigate = useNavigate();
 
   const handleCancel = (event) => {
     event.preventDefault();

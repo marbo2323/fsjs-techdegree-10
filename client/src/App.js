@@ -2,6 +2,8 @@ import { Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Courses from "./components/Courses";
 import Header from "./components/Header";
+import CreateCourse from "./components/CreateCourse";
+
 function App() {
   const [courses, setCourses] = useState([]);
 
@@ -27,6 +29,7 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<Courses courses={courses} />} />
+          <Route path="/courses/create" element={<CreateCourse />} />
         </Routes>
       </main>
     </>
