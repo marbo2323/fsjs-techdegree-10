@@ -1,5 +1,8 @@
-import { useRef } from "react";
+import { useRef, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createCourse } from "../utils/apiClient";
+import UserContext from "../context/UserContext";
+import ValidationErrors from "./ValidationErrors";
 
 const CreateCourse = () => {
   const courseTitle = useRef();
@@ -7,10 +10,46 @@ const CreateCourse = () => {
   const estimatedTime = useRef();
   const materialsNeeded = useRef();
   const navigate = useNavigate();
+  const { authUser, credentials } = useContext(UserContext);
+  const [errors, setErrors] = useState([]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Handle Create Course");
+    setErrors([]);
+    if (authUser) {
+      const courseData = {
+        title: courseTitle.current.value,
+        description: courseDescription.current.value,
+        userId: authUser.id,
+      };
+      if (estimatedTime.current.value) {
+        courseData.estimatedTime = estimatedTime.current.value;
+      }
+      if (materialsNeeded.current.value) {
+        courseData.materialsNeeded = materialsNeeded.current.value;
+      }
+
+      try {
+        const response = await createCourse(courseData, credentials);
+        if (response.status === 201) {
+          navigate("/");
+        } else if (response.status === 400) {
+          const errorMessage = await response.json();
+          console.log(errorMessage);
+          Array.isArray(errorMessage.message)
+            ? setErrors(errorMessage.message)
+            : setErrors([errorMessage.message]);
+        } else {
+          throw new Error(
+            `An error occurred while creating the course. The response status is ${response.status}.`
+          );
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    } else {
+      navigate("/signin");
+    }
   };
 
   const handleCancel = (event) => {
@@ -21,7 +60,7 @@ const CreateCourse = () => {
   return (
     <div className="wrap">
       <h2>Create Course</h2>
-
+      <ValidationErrors errors={errors} />
       <form onSubmit={handleSubmit}>
         <div className="main--flex">
           <div>
@@ -33,7 +72,7 @@ const CreateCourse = () => {
               ref={courseTitle}
             />
 
-            <p>By Signed in user</p>
+            <p>By {authUser.firstName + " " + authUser.lastName}</p>
 
             <label htmlFor="courseDescription">Course Description</label>
             <textarea

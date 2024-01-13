@@ -4,6 +4,7 @@ const UserContext = createContext(null);
 
 export const UserProvider = (props) => {
   const [authUser, setAuthUser] = useState(null);
+  const [credentials, setCredentials] = useState(null);
 
   const signInUser = async (credentials) => {
     const response = await signIn(credentials);
@@ -11,6 +12,7 @@ export const UserProvider = (props) => {
     if (response.status === 200) {
       const user = await response.json();
       setAuthUser(user);
+      setCredentials(credentials);
       return user;
     } else if (response.status === 401) {
       return null;
@@ -27,6 +29,7 @@ export const UserProvider = (props) => {
     <UserContext.Provider
       value={{
         authUser,
+        credentials,
         actions: {
           signInUser,
           signOutUser,

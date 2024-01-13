@@ -41,3 +41,8 @@ export const getCourseById = (courseId) => {
   const apiPath = "/courses/" + courseId;
   return call(apiPath);
 };
+
+export const createCourse = (courseData, credentials) => {
+  const apiPath = "/courses";
+  return call(apiPath, "POST", courseData, credentials);
+};
