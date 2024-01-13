@@ -51,3 +51,8 @@ export const updateCourse = (courseId, courseData, credentials) => {
   const apiPath = "/courses/" + courseId;
   return call(apiPath, "PUT", courseData, credentials);
 };
+
+export const deleteCourse = (courseId, credentials) => {
+  const apiPath = "/courses/" + courseId;
+  return call(apiPath, "DELETE", null, credentials);
+};
