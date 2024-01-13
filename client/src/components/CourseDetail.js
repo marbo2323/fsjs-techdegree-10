@@ -43,7 +43,7 @@ const CourseDetail = () => {
         navigate("/notfound");
       }
     })();
-  }, [id]);
+  }, [id, navigate]);
 
   if (course) {
     return (
