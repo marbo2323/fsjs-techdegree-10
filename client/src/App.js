@@ -8,6 +8,9 @@ import UserSignUp from "./components/UserSignUp";
 import UserSignIn from "./components/UserSignIn";
 import UserSignOut from "./components/UserSignOut";
 import PrivateRoute from "./components/PrivateRoute";
+import NotFound from "./components/NotFound";
+import Forbidden from "./components/Forbidden";
+import Error from "./components/Error";
 
 function App() {
   return (
@@ -20,11 +23,14 @@ function App() {
             <Route path="/courses/create" element={<CreateCourse />} />
             <Route path="/courses/:id/update" element={<UpdateCourse />} />
           </Route>
-
           <Route path="/courses/:id" element={<CourseDetail />} />
           <Route path="/signin" element={<UserSignIn />} />
           <Route path="/signup" element={<UserSignUp />} />
           <Route path="/signout" element={<UserSignOut />} />
+          <Route path="/notfound" element={<NotFound />} />
+          <Route path="/forbidden" element={<Forbidden />} />
+          <Route path="/error" element={<Error />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
     </>

@@ -27,7 +27,8 @@ const UserSignIn = () => {
       }
     } catch (error) {
       console.log(error);
-      setErrors(["Sign-in Failed!"]);
+      //setErrors(["Sign-in Failed!"]);
+      navigate("/error");
     }
   };
 

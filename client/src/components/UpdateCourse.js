@@ -68,6 +68,8 @@ const UpdateCourse = () => {
       if (response.status === 200) {
         const courseData = await response.json();
         setCourse(courseData);
+      } else if (response.status === 404) {
+        navigate("/notfound");
       }
     })();
   }, [id]);
