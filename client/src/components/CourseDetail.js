@@ -1,8 +1,9 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import UserContext from "../context/UserContext";
+import { getCourseById } from "../utils/apiClient";
 
-const CourseDetail = ({ loadCourse }) => {
+const CourseDetail = () => {
   const [course, setCourse] = useState();
   const { authUser } = useContext(UserContext);
 
@@ -10,10 +11,13 @@ const CourseDetail = ({ loadCourse }) => {
 
   useEffect(() => {
     (async () => {
-      const courseData = await loadCourse(id);
-      setCourse(courseData);
+      const response = await getCourseById(id);
+      if (response.status === 200) {
+        const courseData = await response.json();
+        setCourse(courseData);
+      }
     })();
-  }, []);
+  }, [id]);
 
   if (course) {
     return (

@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { getCourseById } from "../utils/apiClient";
 
 const UpdateCourse = ({ loadCourse }) => {
   const [course, setCourse] = useState();
@@ -22,11 +23,13 @@ const UpdateCourse = ({ loadCourse }) => {
 
   useEffect(() => {
     (async () => {
-      const courseData = await loadCourse(id);
-      console.log(courseData);
-      setCourse(courseData);
+      const response = await getCourseById(id);
+      if (response.status === 200) {
+        const courseData = await response.json();
+        setCourse(courseData);
+      }
     })();
-  }, []);
+  }, [id]);
   if (course) {
     return (
       <div className="wrap">

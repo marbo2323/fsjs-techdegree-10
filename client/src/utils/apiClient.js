@@ -36,3 +36,8 @@ export const getAllCourses = () => {
   const apiPath = "/courses";
   return call(apiPath);
 };
+
+export const getCourseById = (courseId) => {
+  const apiPath = "/courses/" + courseId;
+  return call(apiPath);
+};
