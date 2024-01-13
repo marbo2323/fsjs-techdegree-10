@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import { useEffect, useState } from "react";
 import Courses from "./components/Courses";
 import Header from "./components/Header";
 import CreateCourse from "./components/CreateCourse";
@@ -11,17 +10,6 @@ import UserSignOut from "./components/UserSignOut";
 import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
-  const fetchCourses = async () => {
-    console.log("fetchCourses");
-    const url = "http://localhost:5000/api/courses";
-    const fetchOptions = {
-      method: "GET",
-    };
-    const result = await fetch(url, fetchOptions);
-    const data = await result.json();
-    return data;
-  };
-
   const fetchCourse = async (courseId) => {
     //console.log("fetchCourses");
     const url = "http://localhost:5000/api/courses/" + courseId;
@@ -38,7 +26,7 @@ function App() {
       <Header />
       <main>
         <Routes>
-          <Route path="/" element={<Courses loadCourses={fetchCourses} />} />
+          <Route path="/" element={<Courses />} />
           <Route element={<PrivateRoute />}>
             <Route path="/courses/create" element={<CreateCourse />} />
             <Route

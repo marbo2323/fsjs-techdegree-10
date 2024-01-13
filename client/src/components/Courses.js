@@ -1,14 +1,17 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { getAllCourses } from "../utils/apiClient";
 
-const Courses = ({ loadCourses }) => {
-  console.log("Courses");
+const Courses = () => {
   const [courses, setCourses] = useState();
 
   useEffect(() => {
     (async () => {
-      const data = await loadCourses();
-      setCourses(data);
+      const response = await getAllCourses();
+      if (response.status === 200) {
+        const data = await response.json();
+        setCourses(data);
+      }
     })();
   }, []);
 

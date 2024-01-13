@@ -27,6 +27,12 @@ export const call = (
   return fetch(url, options);
 };
 
-export const signIn = (apiPath, credentials) => {
+export const signIn = (credentials) => {
+  const apiPath = "/users";
   return call(apiPath, "GET", null, credentials);
+};
+
+export const getAllCourses = () => {
+  const apiPath = "/courses";
+  return call(apiPath);
 };

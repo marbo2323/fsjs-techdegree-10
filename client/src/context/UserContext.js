@@ -6,7 +6,7 @@ export const UserProvider = (props) => {
   const [authUser, setAuthUser] = useState(null);
 
   const signInUser = async (credentials) => {
-    const response = await signIn("/users", credentials);
+    const response = await signIn(credentials);
 
     if (response.status === 200) {
       const user = await response.json();
