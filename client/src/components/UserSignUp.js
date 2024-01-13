@@ -1,5 +1,8 @@
-import { useRef } from "react";
+import { useRef, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import ValidationErrors from "./ValidationErrors";
+import { createUser } from "../utils/apiClient";
+import UserContext from "../context/UserContext";
 
 const UserSignUp = () => {
   const firstName = useRef();
@@ -7,9 +10,41 @@ const UserSignUp = () => {
   const emailAddress = useRef();
   const password = useRef();
   const navigate = useNavigate();
+  const [errors, setErrors] = useState([]);
+  const { actions } = useContext(UserContext);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setErrors([]);
+    const userData = {
+      firstName: firstName.current.value,
+      lastName: lastName.current.value,
+      emailAddress: emailAddress.current.value,
+      password: password.current.value,
+    };
+
+    try {
+      const response = await createUser(userData);
+      if (response.status === 201) {
+        const credentials = {
+          emailAddress: emailAddress.current.value,
+          password: password.current.value,
+        };
+        await actions.signInUser(credentials);
+        navigate("/");
+      } else if (response.status === 400) {
+        const errorData = await response.json();
+        Array.isArray(errorData.message)
+          ? setErrors(errorData.message)
+          : setErrors([errorData.message]);
+      } else {
+        throw new Error(
+          `An error occurred while creating the user. The response status is ${response.status}.`
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleCancel = (event) => {
@@ -20,6 +55,7 @@ const UserSignUp = () => {
   return (
     <div className="form--centered">
       <h2>Sign Up</h2>
+      <ValidationErrors errors={errors} />
       <form onSubmit={handleSubmit}>
         <label htmlFor="firstName">First Name</label>
         <input id="firstName" name="firstName" type="text" ref={firstName} />

@@ -32,6 +32,11 @@ export const signIn = (credentials) => {
   return call(apiPath, "GET", null, credentials);
 };
 
+export const createUser = (userData) => {
+  const apiPath = "/users";
+  return call(apiPath, "POST", userData);
+};
+
 export const getAllCourses = () => {
   const apiPath = "/courses";
   return call(apiPath);

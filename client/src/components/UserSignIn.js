@@ -1,31 +1,33 @@
-import { useRef, useContext } from "react";
+import { useRef, useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../context/UserContext";
+import ValidationErrors from "./ValidationErrors";
 
 const UserSignIn = () => {
   const emailAddress = useRef();
   const password = useRef();
   const navigate = useNavigate();
   const { actions } = useContext(UserContext);
+  const [errors, setErrors] = useState([]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setErrors([]);
     const credentials = {
       emailAddress: emailAddress.current.value,
       password: password.current.value,
     };
 
-    let errors = [];
     try {
       const user = await actions.signInUser(credentials);
       if (user) {
         navigate("/");
       } else {
-        errors = ["Sign-in Feiled!"];
+        setErrors(["Sign-in Failed!"]);
       }
     } catch (error) {
       console.log(error);
-      errors = ["Sign-in Feiled!"];
+      setErrors(["Sign-in Failed!"]);
     }
   };
 
@@ -37,6 +39,7 @@ const UserSignIn = () => {
   return (
     <div className="form--centered">
       <h2>Sign In</h2>
+      <ValidationErrors errors={errors} />
       <form onSubmit={handleSubmit}>
         <label htmlFor="emailAddress">Email Address</label>
         <input
