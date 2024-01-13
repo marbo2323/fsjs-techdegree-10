@@ -46,3 +46,8 @@ export const createCourse = (courseData, credentials) => {
   const apiPath = "/courses";
   return call(apiPath, "POST", courseData, credentials);
 };
+
+export const updateCourse = (courseId, courseData, credentials) => {
+  const apiPath = "/courses/" + courseId;
+  return call(apiPath, "PUT", courseData, credentials);
+};

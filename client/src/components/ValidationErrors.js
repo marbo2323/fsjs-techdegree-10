@@ -4,8 +4,8 @@ const ValidationErrors = ({ errors }) => {
       <div className="validation--errors">
         <h3>Validation Errors</h3>
         <ul>
-          {errors.map((error) => (
-            <li>{error}</li>
+          {errors.map((error, index) => (
+            <li key={index}>{error}</li>
           ))}
         </ul>
       </div>

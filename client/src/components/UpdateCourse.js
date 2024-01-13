@@ -1,8 +1,11 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getCourseById } from "../utils/apiClient";
+import UserContext from "../context/UserContext";
+import { updateCourse } from "../utils/apiClient";
+import ValidationErrors from "./ValidationErrors";
 
-const UpdateCourse = ({ loadCourse }) => {
+const UpdateCourse = () => {
   const [course, setCourse] = useState();
   let courseTitle = useRef();
   let courseDescription = useRef();
@@ -10,10 +13,48 @@ const UpdateCourse = ({ loadCourse }) => {
   let materialsNeeded = useRef();
   const navigate = useNavigate();
   const { id } = useParams();
+  const { authUser, credentials } = useContext(UserContext);
+  const [errors, setErrors] = useState([]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Update course");
+
+    setErrors([]);
+
+    if (authUser) {
+      const courseData = {
+        title: courseTitle.current.value,
+        description: courseDescription.current.value,
+        userId: authUser.id,
+      };
+      if (estimatedTime.current.value) {
+        courseData.estimatedTime = estimatedTime.current.value;
+      }
+      if (materialsNeeded.current.value) {
+        courseData.materialsNeeded = materialsNeeded.current.value;
+      }
+
+      try {
+        const response = await updateCourse(id, courseData, credentials);
+        if (response.status === 204) {
+          navigate("/courses/" + id);
+        } else if (response.status === 400) {
+          const errorMessage = await response.json();
+          console.log(errorMessage);
+          Array.isArray(errorMessage.message)
+            ? setErrors(errorMessage.message)
+            : setErrors([errorMessage.message]);
+        } else {
+          throw new Error(
+            `An error occurred while updating the course. The response status is ${response.status}.`
+          );
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    } else {
+      navigate("/signin");
+    }
   };
 
   const handleCancel = (event) => {
@@ -34,7 +75,7 @@ const UpdateCourse = ({ loadCourse }) => {
     return (
       <div className="wrap">
         <h2>Update Course</h2>
-
+        <ValidationErrors errors={errors} />
         <form onSubmit={handleSubmit}>
           <div className="main--flex">
             <div>
