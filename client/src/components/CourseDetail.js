@@ -1,14 +1,37 @@
 import { useState, useEffect, useContext } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import UserContext from "../context/UserContext";
-import { getCourseById } from "../utils/apiClient";
+import { getCourseById, deleteCourse } from "../utils/apiClient";
 import Markdown from "react-markdown";
 
 const CourseDetail = () => {
   const [course, setCourse] = useState();
-  const { authUser } = useContext(UserContext);
-
+  const { authUser, credentials } = useContext(UserContext);
   const { id } = useParams();
+  const navigate = useNavigate();
+
+  const handleDelete = async () => {
+    if (authUser) {
+      try {
+        const confirmMessage = `Are you sure you want to delete the course "${course.title}"?`;
+        if (!window.confirm(confirmMessage)) {
+          return;
+        }
+        const response = await deleteCourse(id, credentials);
+        if (response.status === 204) {
+          navigate("/");
+        } else {
+          throw new Error(
+            `An error occurred while deleting the course. The response status is ${response.status}.`
+          );
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    } else {
+      navigate("/signin");
+    }
+  };
 
   useEffect(() => {
     (async () => {
@@ -31,7 +54,7 @@ const CourseDetail = () => {
                 <Link className="button" to={"/courses/" + id + "/update"}>
                   Update Course
                 </Link>
-                <Link className="button" to="#">
+                <Link className="button" to="#" onClick={handleDelete}>
                   Delete Course
                 </Link>{" "}
               </>
