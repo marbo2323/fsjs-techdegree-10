@@ -67,7 +67,11 @@ const UpdateCourse = () => {
       const response = await getCourseById(id);
       if (response.status === 200) {
         const courseData = await response.json();
-        setCourse(courseData);
+        if (courseData.userId === authUser.id) {
+          setCourse(courseData);
+        } else {
+          navigate("/forbidden");
+        }
       } else if (response.status === 404) {
         navigate("/notfound");
       }
