@@ -39,6 +39,7 @@ const UpdateCourse = () => {
         if (response.status === 204) {
           navigate("/courses/" + id);
         } else if (response.status === 400) {
+          // display validation errors to user
           const errorMessage = await response.json();
           console.log(errorMessage);
           Array.isArray(errorMessage.message)
@@ -51,6 +52,7 @@ const UpdateCourse = () => {
         }
       } catch (error) {
         console.log(error.message);
+        navigate("/error");
       }
     } else {
       navigate("/signin");
@@ -76,7 +78,7 @@ const UpdateCourse = () => {
         navigate("/notfound");
       }
     })();
-  }, [id, navigate]);
+  }, [id, navigate, authUser.id]);
   if (course) {
     return (
       <div className="wrap">
