@@ -3,6 +3,7 @@ import { signIn } from "../utils/apiClient";
 const UserContext = createContext(null);
 
 export const UserProvider = (props) => {
+  // Read item from local storage by item key
   const getStorageItem = (key) => {
     const item = localStorage.getItem(key);
     if (item) {
