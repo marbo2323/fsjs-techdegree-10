@@ -1,5 +1,5 @@
 import { useRef, useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import UserContext from "../context/UserContext";
 import ValidationErrors from "./ValidationErrors";
 
@@ -9,6 +9,7 @@ const UserSignIn = () => {
   const navigate = useNavigate();
   const { actions } = useContext(UserContext);
   const [errors, setErrors] = useState([]);
+  const location = useLocation();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -18,10 +19,15 @@ const UserSignIn = () => {
       password: password.current.value,
     };
 
+    let from = "/";
+    if (location.state) {
+      from = location.state.from;
+    }
+
     try {
       const user = await actions.signInUser(credentials);
       if (user) {
-        navigate("/");
+        navigate(from);
       } else {
         setErrors(["Sign-in Failed!"]);
       }
