@@ -61,7 +61,7 @@ const UpdateCourse = () => {
 
   const handleCancel = (event) => {
     event.preventDefault();
-    navigate("/");
+    navigate("/courses/" + id);
   };
 
   useEffect(() => {
