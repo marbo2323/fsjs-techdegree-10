@@ -4,21 +4,30 @@ import UserContext from "../context/UserContext";
 import ValidationErrors from "./ValidationErrors";
 
 const UserSignIn = () => {
+  // React hooks
   const emailAddress = useRef();
   const password = useRef();
   const navigate = useNavigate();
   const { actions } = useContext(UserContext);
-  const [errors, setErrors] = useState([]);
   const location = useLocation();
 
+  // State
+  const [errors, setErrors] = useState([]);
+
+  // Event handlers
+
+  // Handle form submit
   const handleSubmit = async (event) => {
+    // prevent form submit default behaviour
     event.preventDefault();
+    // Reset errors
     setErrors([]);
     const credentials = {
       emailAddress: emailAddress.current.value,
       password: password.current.value,
     };
 
+    // setting the redirect location based on the user's original location
     let from = "/";
     if (location.state) {
       from = location.state.from;
@@ -37,6 +46,7 @@ const UserSignIn = () => {
     }
   };
 
+  // Handling the cancel button click
   const handleCancel = (event) => {
     event.preventDefault();
     navigate("/");

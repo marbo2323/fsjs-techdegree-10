@@ -6,6 +6,7 @@ import { updateCourse } from "../utils/apiClient";
 import ValidationErrors from "./ValidationErrors";
 
 const UpdateCourse = () => {
+  // React hooks
   const [course, setCourse] = useState();
   let courseTitle = useRef();
   let courseDescription = useRef();
@@ -14,19 +15,28 @@ const UpdateCourse = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { authUser, credentials } = useContext(UserContext);
+
+  // State
   const [errors, setErrors] = useState([]);
 
+  // event handlers
+
+  // Handle form submit
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    // Reset error state
     setErrors([]);
 
+    // enable update action to the authenticated user only
     if (authUser) {
+      // set values of raquired fields
       const courseData = {
         title: courseTitle.current.value,
         description: courseDescription.current.value,
         userId: authUser.id,
       };
+      // set values of optional fields
       if (estimatedTime.current.value) {
         courseData.estimatedTime = estimatedTime.current.value;
       }
@@ -37,6 +47,7 @@ const UpdateCourse = () => {
       try {
         const response = await updateCourse(id, courseData, credentials);
         if (response.status === 204) {
+          // if action is successful redirect to the course's detail page
           navigate("/courses/" + id);
         } else if (response.status === 400) {
           // display validation errors to user
@@ -46,35 +57,43 @@ const UpdateCourse = () => {
             ? setErrors(errorMessage.message)
             : setErrors([errorMessage.message]);
         } else {
+          // if the response status is not 204 or 400, throw an error
           throw new Error(
             `An error occurred while updating the course. The response status is ${response.status}.`
           );
         }
       } catch (error) {
+        // In case of an unexpected error, redirect to the /error route
         console.log(error.message);
         navigate("/error");
       }
     } else {
+      // when the user is not logged in, redirect to /signin route
       navigate("/signin");
     }
   };
 
+  // Handling the cancel button click
   const handleCancel = (event) => {
     event.preventDefault();
     navigate("/courses/" + id);
   };
 
+  // Fetch course data from API using async IIFE (see: https://developer.mozilla.org/en-US/docs/Glossary/IIFE)
   useEffect(() => {
     (async () => {
       const response = await getCourseById(id);
       if (response.status === 200) {
         const courseData = await response.json();
+        // Fetch course inly for course owner
         if (courseData.userId === authUser.id) {
           setCourse(courseData);
         } else {
+          // if authenticated user is not the owner, redirect to /forbidden route
           navigate("/forbidden");
         }
       } else if (response.status === 404) {
+        // if the server responds with a 400 status, redirect to the /notfound route
         navigate("/notfound");
       }
     })();

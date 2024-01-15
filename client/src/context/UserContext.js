@@ -12,9 +12,11 @@ export const UserProvider = (props) => {
     return null;
   };
 
+  // user and credential states
   const [authUser, setAuthUser] = useState(getStorageItem("authUser"));
   const [credentials, setCredentials] = useState(getStorageItem("credentials"));
 
+  // function for user login
   const signInUser = async (credentials) => {
     const response = await signIn(credentials);
 
@@ -32,6 +34,7 @@ export const UserProvider = (props) => {
     }
   };
 
+  // function for user logout
   const signOutUser = () => {
     setAuthUser(null);
     setCredentials(null);
