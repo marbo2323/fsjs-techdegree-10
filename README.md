@@ -20,4 +20,4 @@ Use `npm start` command to start applications. The API starts at localhost:5000 
 
 ### Testing REST API endpoints
 
-In the root folder of the project is the Postman collection `RESTAPI.postman_collection.json`, which can be imported into the [Postman application](https://www.postman.com/). It can be used to manually test endpoints.
+In the 'api' is the Postman collection `RESTAPI.postman_collection.json`, which can be imported into the [Postman application](https://www.postman.com/). It can be used to manually test endpoints.
