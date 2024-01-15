@@ -27,6 +27,7 @@ const CourseDetail = () => {
         }
       } catch (error) {
         console.log(error.message);
+        navigate("/error");
       }
     } else {
       navigate("/signin");

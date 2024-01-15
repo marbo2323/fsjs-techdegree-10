@@ -44,6 +44,7 @@ const UserSignUp = () => {
       }
     } catch (error) {
       console.log(error);
+      navigate("/error");
     }
   };
 
