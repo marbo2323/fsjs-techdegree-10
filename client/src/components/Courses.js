@@ -40,6 +40,8 @@ const Courses = () => {
             y="0px"
             viewBox="0 0 13 13"
             className="add"
+            role="img"
+            aria-label="add course icon"
           >
             <polygon points="7,6 7,0 6,0 6,6 0,6 0,7 6,7 6,13 7,13 7,7 13,7 13,6 "></polygon>
           </svg>
